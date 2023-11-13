@@ -20,10 +20,6 @@ defmodule ChatServer.Connection do
     # data is data
     Logger.debug("Received data #{inspect(data)}")
 
-    # set socket to active: :once
-    :ok = :inet.setopts(socket, active: :once)
-
-    # broadcast data to all clients
     ChatServer.ConnectionSupervisor.broadcast(
       ChatServer.ConnectionSupervisor,
       self(),
@@ -42,13 +38,6 @@ defmodule ChatServer.Connection do
     Logger.debug("TCP conn closed")
     {:stop, :normal, state}
   end
-
-  # # matching all else
-  # def handle_info(message, state) do
-  #   Logger.info("DEFAULT CASE")
-  #   Logger.info(message)
-  #   {:noreply, state}
-  # end
 
   def push({pid, _}, packet) do
     Logger.info("I AM IN CONNECTION")

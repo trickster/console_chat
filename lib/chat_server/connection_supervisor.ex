@@ -1,9 +1,7 @@
 defmodule ChatServer.ConnectionSupervisor do
   @moduledoc """
 
-  I have to keep track of all connections here
   """
-  # use GenServer, restart: :temporary
   use GenServer
   require Logger
 
@@ -69,12 +67,6 @@ defmodule ChatServer.ConnectionSupervisor do
     %{^pid => name} = pids
     {:reply, name, state}
   end
-
-  # @impl true
-  # def handle_call({:client_pid, name}, _from, {names, _} = state) do
-  #   %{^name => pid} = names
-  #   {:reply, pid, state}
-  # end
 
   @impl true
   def handle_cast({:register, socket}, state) do
@@ -151,6 +143,7 @@ defmodule ChatServer.ConnectionSupervisor do
     )
   end
 
+  # TODO: Send the most recent messages to the user.
   defp send_most_recent_msgs(_socket) do
     # :ok = :gen_tcp.send(socket, "Getting stuff\r\n")
   end

@@ -1,5 +1,4 @@
 defmodule ChatServer.Acceptor do
-  # if the task is not stopped gracefully, it will restart, if we stop it, it won't
   use Task, restart: :transient
 
   require Logger
@@ -8,19 +7,10 @@ defmodule ChatServer.Acceptor do
     Task.start_link(__MODULE__, :run, [])
   end
 
-  # when you start with active - true
-  # data from the socket is sent to controlling process as messages
-  # data, sock errors, sock closed
-
-  # active: :true is for continuously waiting to listen to messages on the socket
-  # active: :once is better, it listens to one message and goes to sleep
-  # only to be waken up by controlling process with :inet.setopts()
-  # this is good for backpressure, as we will only setopts when we are done with current message
   def run do
     case :gen_tcp.listen(8080, [
            :binary,
            ifaddr: {0, 0, 0, 0},
-           #  active: :once,
            active: true,
            packet: :line,
            reuseaddr: true
